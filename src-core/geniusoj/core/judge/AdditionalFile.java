@@ -73,8 +73,4 @@ public class AdditionalFile {
 		}
 		return false;
 	}
-	
-	public static void main(String[] args) throws MalformedURLException {
-		
-	}
 }
