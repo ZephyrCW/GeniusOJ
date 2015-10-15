@@ -4,9 +4,9 @@ public class Solution {
 
 	public UserCode user_code;
 	public JudgeScript judge_script;
+	public AdditionalFile addal_file;
 	
-	public Solution(UserCode code, JudgeScript script){
-		this.user_code=code;
-		this.judge_script=script;
+	public Solution(int solution_id){
+		
 	}
 }
