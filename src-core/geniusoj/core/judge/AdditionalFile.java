@@ -4,15 +4,19 @@ import geniusoj.core.util.log.GOJLog;
 import geniusoj.core.util.zip.ZipUtil;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
 
+/**
+ * 
+ * Class AdditionalFile
+ * AdditionalFile can check, copy and unzip the additional file(s) of judgement operation.
+ * By invoking the public method, prepare, to start whole progress of finishing prepare of additional file(s).
+ * @author GISDYT@SS
+ *
+ */
 public class AdditionalFile {
 
 	public String source_file;
@@ -23,18 +27,14 @@ public class AdditionalFile {
 		this.target_path=target_path_s;
 	}
 	
-	public boolean check(){
+	private boolean check(){
 		if(new File(target_path).exists() && new File(target_path).isDirectory() && new File(source_file).exists()){
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean copy(){
-		if(!check()){
-			GOJLog.println("File didn't found when copying judgement script addtional files.");
-			return false;
-		}
+	private boolean copy(){
 		try {
 			File target_file=new File(new File(target_path).toURI()+"/"+new File(source_file).getName());
 			if(target_file.exists()){
@@ -60,7 +60,7 @@ public class AdditionalFile {
 		}
 	}
 	
-	public boolean unzip(){
+	private boolean unzip(){
 		if(copy()){
 			try {
 				new ZipUtil().unZip(new File(target_path).toURI()+"/"+new File(source_file).getName(), target_path, false);
@@ -72,5 +72,18 @@ public class AdditionalFile {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * Yap, you found this. Invoke this to finish the progress of preparing additional file(s).
+	 * @return "additional_file_check_error" when file not exites or is read-only.<br/>"additional_file_copy_error" when file can't be copied to target.<br/>"additional_file_unzip_error" when file can't be unziped successfully.<br/>Otherwise, the progress finished successfully, return "addtional_file_operation_finish_successfully"
+	 * 
+	 */
+	public String prepare(){
+		if(!check()) return "additional_file_check_error";
+		if(!copy()) return "additional_file_copy_error";
+		if(!unzip()) return "additional_file_unzip_error";
+		return "addtional_file_operation_finish_successfully";
 	}
 }
