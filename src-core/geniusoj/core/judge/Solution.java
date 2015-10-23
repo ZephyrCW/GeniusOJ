@@ -1,5 +1,7 @@
 package geniusoj.core.judge;
 
+import geniusoj.core.util.log.GOJLog;
+
 import java.util.UUID;
 
 public class Solution {
@@ -30,8 +32,21 @@ public class Solution {
 		
 	}
 	
-	public void async_judge(){
+	public interface JudgeCallback{
 		
+		public void judgeFinished(JudgeReport report);
+	}
+	
+	public void async_judge(JudgeCallback cb){
+		new Thread(){
+			
+			@Override
+			public void run(){
+				GOJLog.println("Async judge start to progress with uuid: ["+solution_uuid+"] ......");
+				cb.judgeFinished(sync_judge());
+				GOJLog.println("Async judge progress finish with uuid: ["+solution_uuid+"] ......");
+			}
+		}.start();
 	}
 	
 	public JudgeReport sync_judge(){
